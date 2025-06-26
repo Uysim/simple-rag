@@ -46,11 +46,17 @@ simple-rag/
 ```
 
 ## Usage
-
-1. Place your documents in the `data/documents` directory
-2. Launch the application
+1. Launch the application
 3. Select documents to process
 4. Start chatting with your documents
+
+## TO DO:
+- [x] ~~Chat with PDF~~
+- [x] ~~Chat with TEXT file~~
+- [ ] Chat Webpage
+
+## Reference
+To understand RAG in the bigger picture checkout my [LinkedIn Post](https://www.linkedin.com/posts/uysim-ty_rag-ai-llm-activity-7181259205654319104-B2s_?utm_source=share&utm_medium=member_desktop&rcm=ACoAABuzUcUBzY84P7Y1wcoqY899Gt4pCLhr_cQ)
 
 ## License
 
