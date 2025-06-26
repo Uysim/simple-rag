@@ -29,7 +29,7 @@ cp .env.example .env
 
 4. Run the application:
 ```bash
-python -m app.ui.interface
+python main.py
 ```
 
 ## Project Structure
