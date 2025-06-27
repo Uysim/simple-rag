@@ -1,25 +1,16 @@
 from typing import List
 from langchain.chains import ConversationalRetrievalChain
-from langchain.chat_models import ChatOpenAI
-from langchain.memory import ConversationBufferMemory
-from app.core.config import settings
+from app.core.llm import create_llm
+from app.core.memory import create_memory
 from app.core.vectorstore import get_vectorstore
 
 def create_rag_chain():
     """Create RAG chain with conversation memory."""
     # Initialize LLM
-    llm = ChatOpenAI(
-        model_name=settings.model_name,
-        temperature=0,
-        openai_api_key=settings.openai_api_key
-    )
+    llm = create_llm()
     
     # Initialize memory
-    memory = ConversationBufferMemory(
-        memory_key="chat_history",
-        output_key="answer",
-        return_messages=True
-    )
+    memory = create_memory()
     
     # Get vector store
     vectorstore = get_vectorstore()
