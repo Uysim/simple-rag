@@ -1,6 +1,7 @@
 from pathlib import Path
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
+from typing import Optional, Dict
 
 # Load environment variables
 load_dotenv()
@@ -19,6 +20,11 @@ class Settings(BaseSettings):
     # LLM Settings
     openai_api_key: str | None = None
     model_name: str = "gpt-3.5-turbo"
+    
+    # Web Loading Settings
+    web_timeout: int = 30
+    web_user_agent: str = "Simple-RAG/1.0"
+    web_requests_per_second: int = 2
     
     class Config:
         env_file = ".env"

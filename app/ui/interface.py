@@ -1,26 +1,7 @@
 import gradio as gr
-from pathlib import Path
 from typing import List
-from app.document.loader import load_document, split_text
-from app.core.vectorstore import get_vectorstore
+from app.document import process_documents, process_webpages
 from app.rag.chain import create_rag_chain
-
-def process_documents(files: List[str]) -> str:
-    """Process uploaded documents and add to vector store."""
-    vectorstore = get_vectorstore()
-    
-    for file_path in files:
-        # Load and split document
-        text = load_document(Path(file_path))
-        chunks = split_text(text)
-        
-        # Add to vector store
-        vectorstore.add_texts(
-            texts=chunks,
-            metadatas=[{"source": file_path} for _ in chunks]
-        )
-    
-    return "Documents processed successfully!"
 
 def chat(message: str, history: List[List[str]]) -> List[List[str]]:
     """Process chat message and return response."""
@@ -37,13 +18,23 @@ with gr.Blocks() as demo:
     
     with gr.Row():
         with gr.Column():
+            gr.Markdown("## Upload Documents")
             file_input = gr.File(
                 label="Upload Documents",
                 file_count="multiple",
                 file_types=[".pdf", ".txt", ".md"]
             )
             process_btn = gr.Button("Process Documents")
-            status = gr.Textbox(label="Status")
+            file_status = gr.Textbox(label="File Status")
+            
+            gr.Markdown("## Add Webpages")
+            urls_input = gr.Textbox(
+                label="Enter webpage URLs (one per line or comma-separated)",
+                placeholder="https://example.com\nhttps://another-example.com\nhttps://third-example.com",
+                lines=5
+            )
+            webpage_btn = gr.Button("Process Webpages")
+            webpage_status = gr.Textbox(label="Webpage Status", lines=3)
         
         with gr.Column():
             chatbot = gr.Chatbot()
@@ -54,7 +45,13 @@ with gr.Blocks() as demo:
     process_btn.click(
         process_documents,
         inputs=[file_input],
-        outputs=[status]
+        outputs=[file_status]
+    )
+    
+    webpage_btn.click(
+        process_webpages,
+        inputs=[urls_input],
+        outputs=[webpage_status]
     )
     
     msg.submit(
